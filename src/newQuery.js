@@ -18,29 +18,22 @@
 (function(window, undefined) {
   
   // 入口API，返回newQuery对象
-  var newQuery = function(selector) {
-    return new newQuery.fn.init(selector);
+  var newQuery = function(selector, context) {
+    return new newQuery.fn.init(selector, context);
   }
 
   // 设置newQuery原型对象
   newQuery.fn = newQuery.prototype = {
     constructor: newQuery,
     newQuery: '0.1',
-    init: function(selector) {
-      var reg = /^#([\w-]+)/;
-
-      // 处理 $('#')
-      if (typeof selector === 'string') {
-        var match = reg.exec(selector);
-        if (match && match[1]) {
-          console.log('match[1]: ' + match[1]);
-          var elm = document.getElementById(match[1]);
-          if (elm) {
-            this.length = 1;
-            this[ 0 ] = elm;
-          }
-        }
+    init: function(selector, context) {
+      var doms;
+      if (!context) {
+        doms = document.querySelector(selector);
+      } else if (typeof context === 'newQuery') {
+        context[0].querySelector(selector);
       }
+      console.log(doms);
       return this;
     }
   }
