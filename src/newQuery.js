@@ -1,6 +1,7 @@
 /**
  * newQuery  --v0.1
  * 
+ * 一个简易的dom操作库
  * 一个模仿jQuery的一个玩具项目。
  * 本项目主要用于：
  *    学习jQuery的实现原理
@@ -24,18 +25,41 @@
 
   // 设置newQuery原型对象
   newQuery.fn = newQuery.prototype = {
+    
     constructor: newQuery,
+    
     newQuery: '0.1',
+
+    length: 0,
+
     init: function(selector, context) {
       var doms;
+
+      // 执行dom查询
       if (!context) {
-        doms = document.querySelector(selector);
+        doms = document.querySelectorAll(selector);
       } else if (typeof context === 'newQuery') {
-        context[0].querySelector(selector);
+        context[0].querySelectorAll(selector);
       }
-      console.log(doms);
+
+      // 绑定到newQuery对象上
+      for (var i=0; i<doms.length; i++) {
+        this[ i ]  = doms[i]
+      }
+      this.length = doms.length;
+
       return this;
+    },
+
+    append: function(node) {
+      console.log(typeof node);
+      // var doms = newQuery(selector);
+
+      // for (var i=0; i<doms.length; i++) {
+      //   this[0].appendChild(doms[i]);
+      // }
     }
+
   }
 
   // 让init方法继承newQuery原型，使newQuery实例继承newQuery的方法
@@ -43,4 +67,4 @@
 
   // 暴露API
   window.$ = newQuery;
-})(window, undefined);
+})(window);
