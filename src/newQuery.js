@@ -2,11 +2,6 @@
  * newQuery  --v0.1
  * 
  * 一个简易的dom操作库
- * 本项目主要用于：
- *    了解dom操作
- *    封装自己的库文件
- *    熟悉原生js
- *    熟悉webpack打包
  * 欢迎使用交流！
  * 
  */
@@ -84,21 +79,18 @@
       return this;
     },
 
-    append: function(node) {
-      console.log(typeof node);
-      var doms = newQuery(node);
-      
-      
-      for (var i=0; i<doms.length; i++) {
-        this[0].appendChild(doms[i]);
+    append: function(content) {
+      if (typeof content === 'string') {
+        var doms = buildFragment(content);
+        for (var i=0; i<this.length; i++) {
+          this[i].appendChild(doms[0]);
+        }
       }
     }
 
   }
 
-  // 让init方法继承newQuery原型，使newQuery实例继承newQuery的方法
   newQuery.fn.init.prototype = newQuery.fn;
-
-  // 暴露API
   window.$ = newQuery;
+
 })(window);
