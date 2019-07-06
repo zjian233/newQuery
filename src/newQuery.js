@@ -92,7 +92,6 @@
         }
       }
     },
-
     after: function(content) {
       if (typeof content === 'string') {
         var doms = buildFragment(content);
@@ -103,7 +102,6 @@
         }
       }
     },
-    
     prepend: function(content) {
       if (typeof content === 'string') {
         var doms = buildFragment(content);
@@ -113,8 +111,7 @@
           }
         }
       }
-    }, 
-
+    },
     before: function(content) {
       if (typeof content === 'string') {
         var doms = buildFragment(content);
@@ -171,9 +168,14 @@
     hide: function() {
       this.css('display', 'none');
     },
-
     show: function() {
       this.css('display', 'block');
+    },
+
+    on: function(type, callback) {
+      each(this, function($this) {
+        $this.addEventListener(type, callback);
+      });
     }
   }
 
