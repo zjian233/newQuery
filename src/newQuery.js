@@ -82,6 +82,43 @@
       return this;
     },
 
+    indexOf: [].indexOf,
+
+    val: function (content) {
+      if (typeof content === 'string') {
+        each(this, function($this) {
+          console.log($this.value);
+          $this.value = content;
+        });
+      } else {
+        var res = '';
+        each(this, function($this) {
+          res += $this.value;
+        })
+        return res;
+      }
+    },
+
+    text: function(content) {
+      if (content) {
+        each(this, function($this) {
+          $this.innerText = content;
+        })
+      } else {
+        var res = '';
+        each(this, function($this) {
+          res += $this.innerText;
+        });
+        return res;
+      }
+    },
+
+    addClass: function(cls) {
+      each(this, function($this) {
+        $this.classList.add(cls);
+      });
+    },
+
     append: function(content) {
       if (typeof content === 'string') {
         var doms = buildFragment(content);
@@ -172,11 +209,41 @@
       this.css('display', 'block');
     },
 
-    on: function(type, callback) {
-      each(this, function($this) {
-        $this.addEventListener(type, callback);
-      });
+    on: function(type, selector, callback) {
+      if(callback === undefined) {
+        callback = selector;
+        
+        each(this, function($this) {
+          $this.addEventListener(type, callback);
+        });
+
+      } else {
+        // 有代理
+
+        // 重写回调函数
+        var delegator = function (e) {
+          
+          var collection = $(selector);
+          var target = e.target;
+
+          while (collection.indexOf(target) < 0) {
+            if (target === document) break;
+            target = target.parentNode;
+          }
+          // 找到了需要委托的节点, 执行回调
+          if (collection.indexOf(target) >= 0) {
+            // 更改this指向
+            callback.call(target, e);
+          }
+        }
+        each(this, function($this) {
+          $this.addEventListener(type, delegator);
+        });
+      }
+      
+      
     }
+
   }
 
   newQuery.fn.init.prototype = newQuery.fn;
