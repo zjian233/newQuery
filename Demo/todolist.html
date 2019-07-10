@@ -5,10 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>test html</title>
+  <title>TODO LIST</title>
 </head>
 
 <body>
+  <h1>一个简易todolist</h1>
+  <p>使用newQuery实现</p>
   <input type="text" id="input">
   <button id="btn">添加</button>
   <ul id="lst"></ul>
@@ -19,7 +21,6 @@
       var item = $('<li>');
       item.text($('input').val());
       item.addClass('item');
-      // var item = '<li>' + $('#input').val() + ' </li>';
       $('#lst').append(item);
       $('#input').val('');
     });

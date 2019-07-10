@@ -20,6 +20,10 @@
     return res;
   }
 
+  function isNewQueryObject(obj) {
+    return obj instanceof newQuery;
+  }
+
   function likeArray(obj) {
     if (obj.length !== undefined) {
       return true;
@@ -49,7 +53,7 @@
     length: 0,
 
     init: function(selector, context) {
-      var doms;
+      var doms = [];
 
       if (typeof selector === 'string') {
 
@@ -67,11 +71,13 @@
             doms = document.querySelectorAll(selector);
 
           // 不带context查询
-          } else if (typeof context === 'newQuery') {
+          } else if (isNewQueryObject(context)) {
             context[0].querySelectorAll(selector);
           }
         }
 
+      } else if (typeof selector === 'object') {
+        doms = [selector];
       }
 
       for (var i=0; i<doms.length; i++) {
@@ -84,10 +90,20 @@
 
     indexOf: [].indexOf,
 
+    first: function() {
+      return $(this[0]);
+    },
+    last: function() {
+      return $(this[this.length-1]);
+    },
+
+    size: function(){
+      return this.length
+    },
+
     val: function (content) {
       if (typeof content === 'string') {
         each(this, function($this) {
-          console.log($this.value);
           $this.value = content;
         });
       } else {
@@ -113,20 +129,46 @@
       }
     },
 
-    addClass: function(cls) {
+    attr: function(name, value) {
+      if (value === undefined) {
+         var res = [];
+         each(this, function($this) {
+           res.push($this.getAttribute(name));
+         });
+         return res;
+      } else {
+        each(this, function($this) {
+          $this.setAttribute(name, value);
+        });
+      }
+    },
+
+    addClass: function(name) {
       each(this, function($this) {
-        $this.classList.add(cls);
+        $this.classList.add(name);
       });
+    },
+    removeClass: function(name) {
+      each(this, function($this) {
+        $this.classList.remove(name);
+      })
     },
 
     append: function(content) {
       if (typeof content === 'string') {
         var doms = buildFragment(content);
-        for (var i=0; i<this.length; i++) {
-          for (var j=0; j<doms.length; j++) {
-            this[i].appendChild(doms[j]);
-          }
-        }
+        each(this, function($this) {
+          each(doms, function(dom) {
+            $this.appendChild(dom);
+          })
+        });
+      } else if (isNewQueryObject(content)) {
+        //插入newQuery对象
+        each(this, function($this) {
+          each(content, function(dom) {
+            $this.appendChild(dom);
+          })
+        })
       }
     },
     after: function(content) {
@@ -158,6 +200,18 @@
           }
         }
       }
+    },
+
+    remove: function() {
+      each(this, function($this) {
+        $this.parentNode.removeChild($this);
+      });
+    },
+
+    empty: function() {
+      each(this, function($this) {
+        $this.innerHTML = '';
+      });
     },
 
     css: function(property, value) {
@@ -223,7 +277,7 @@
         // 重写回调函数
         var delegator = function (e) {
           
-          var collection = $(selector);
+          var collection = $(selector); 
           var target = e.target;
 
           while (collection.indexOf(target) < 0) {
@@ -240,9 +294,8 @@
           $this.addEventListener(type, delegator);
         });
       }
-      
-      
-    }
+    },
+    
 
   }
 
