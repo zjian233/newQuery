@@ -25,8 +25,8 @@
 * attr()  设置属性/获取属性值
 
 ### 事件
-on(type, fn) 绑定事件
-on(type, selector, fn) 事件委托，代理指定选择器的事件
+* on(type, fn) 绑定事件
+* on(type, selector, fn) 事件委托，代理指定选择器的事件
 
 ### css相关
 * css(property, value) 设置样式
