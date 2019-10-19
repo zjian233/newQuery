@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/newQuery.js',
+  entry: './src/index.js',
   output: {
     filename: 'newQuery.js',
     path: path.resolve(__dirname, 'dist')
