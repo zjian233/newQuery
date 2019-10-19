@@ -106,6 +106,7 @@
         each(this, function($this) {
           $this.value = content;
         });
+        return this;
       } else {
         var res = '';
         each(this, function($this) {
@@ -120,6 +121,7 @@
         each(this, function($this) {
           $this.innerText = content;
         })
+        return this;
       } else {
         var res = '';
         each(this, function($this) {
@@ -140,6 +142,7 @@
         each(this, function($this) {
           $this.setAttribute(name, value);
         });
+        return this;
       }
     },
 
@@ -147,11 +150,13 @@
       each(this, function($this) {
         $this.classList.add(name);
       });
+      return this;
     },
     removeClass: function(name) {
       each(this, function($this) {
         $this.classList.remove(name);
       })
+      return this;
     },
 
     append: function(content) {
@@ -170,6 +175,7 @@
           })
         })
       }
+      return this;
     },
     after: function(content) {
       if (typeof content === 'string') {
@@ -179,6 +185,7 @@
             this[i].parentNode.insertBefore(doms[j], this[i].nextSibling);
           }
         }
+        return this;
       }
     },
     prepend: function(content) {
@@ -189,6 +196,7 @@
             this[i].insertBefore(doms[j], this[i].firstChild);
           }
         }
+        return this;
       }
     },
     before: function(content) {
@@ -199,6 +207,7 @@
             this[i].parentNode.insertBefore(doms[j], this[i]);
           }
         }
+        return this;
       }
     },
 
@@ -212,6 +221,7 @@
       each(this, function($this) {
         $this.innerHTML = '';
       });
+      return this;
     },
 
     css: function(property, value) {
@@ -258,9 +268,11 @@
 
     hide: function() {
       this.css('display', 'none');
+      return this;
     },
     show: function() {
       this.css('display', 'block');
+      return this;
     },
 
     on: function(type, selector, callback) {
@@ -294,6 +306,7 @@
           $this.addEventListener(type, delegator);
         });
       }
+      return this;
     },
     
 
